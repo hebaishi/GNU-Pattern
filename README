@@ -1,0 +1,96 @@
+Gpat source code
+====================
+
+Written by: Ying Xu
+Version:    1.01,  4/2004
+
+Description
+-----------
+
+Briefly, Gpat is a clone of IBM splash program 
+with some alterations. Its full source code is
+available  under GNU GPL. It aims at providing users
+a basic work to further the research in pattern 
+discovery. It finds out maximal patterns from input 
+sequences as Teiresias and Splash do. Gpat exists for
+freedom of testing new ideas. 
+For details, see http://www.gnu.org
+
+Notes
+-----
+
+Gpat is a command line program without any graphic 
+user interfaces. download the codes from 
+	ftp://202.127.18.232/xuying/src 
+,decompress the package and compile the program with command 
+	"tar -zvxf gpat.tar.gz"
+	"gcc -v"   (check gcc version)
+	"gcc -o gpat gpat.c ASM1.c -lm -lpthread"
+then the executable binary should be in the same directory.
+noting that gcc 3.2 or above is needed.
+
+Examples
+--------
+example 1
+	"./gpat -i sars.fasta -o pattern_report1 -t 0 -k 5 -l 8 -s 15 -K 12 -p 6 -w 8 -m 2"
+
+"-i sars.fasta -o pattern_report1" tells Gpat to 
+look for patterns from sars.fasta and output the results 
+into pattern_report1(by default, the output file is "my_pattern.pat"). 
+Since the input file is DNA, type should be 0 ("-t 0"). 
+Each pattern is at least 8 letters long and have at least 
+5 letters in its text string("-k 5 -l 8"). "-K 12" tells 
+that the pattern must also appear at least 12 times in 
+the input file. Every seed pattern, from which maximal 
+pattern is derived, must appear at least 15 times ("-s 15") 
+in the input file. "-m 2" says that two threads are started 
+to do the jobs.  
+
+example 2
+	"./gpat -i sars.fasta -o pattern_report1 -t 0 -k 5 -l 5 -x"
+this command tells Gpat to count the occurences of 
+5-letters-long sequences from the input file. "-x" means these 
+sequences will not be extented as what happens in splash algorithm. 
+The number of minimum tokens in seed must equal to the window size 
+with the existence of "-x".
+
+example 3
+	"./gpat -h"
+it lists the help information.
+   "-i input filename                                        input data from file."
+   "-o output filename          (default my_pattern.pat)     output to file."
+   "-k min tokens in seed       (default 5)                  minimum number of tokens in seed."
+   "-l win width of seed        (default 8)                  window width when scanning seed."
+   "-s min supports for seed    (default 2)                  minimum supports needed to be a seed."
+   "-J min tokens in pattern    (default 1)                  minimum number of tokens in pattern."
+   "-K min supports for pattern (default 2)                  minimum supports needed to be reported."
+   "-p min percentage covered   (not used)                   minimum percentage of sequences covered by pattern."
+   "-w min pattern width        (default 0)                  minimum pattern length that should be gained."
+   "-t type sequence type       (default 2)                  dna(0) or extended nucleic acids(1) or protein(2)."
+   "-m multi-threaded           (default 1)                  switch to multi-threaded state"
+   "-n store-pattern till end   (default 0)                  store pattern information till thread dies"
+   "-h --help                                                display this usage information."
+   "-v --verbose                                             print verbose messages."
+   "-x no extension/quick count                              no extension to achieve quick count(k must equal l)");
+
+attentions in version 1.0
+----------
+Sequences from input file are put into a temporary file and mapped 
+into the process' space using mmap. so if the work is interrupted, 
+a temporary file named "iris*" will remain in the "/tmp" directory. 
+Cleaning the directory if necessary or it will be filled with junk 
+sequences.  
+
+changes in version 1.01
+----------
+during sparse searching, weird symbols and wrong 
+patterns will emergy. these bugs were fixed, and 
+this version also removed the dependence on temp
+file. 
+
+
+Contact information
+-------------------
+Ying Xu 
+bio_xy@hotmail.com/xuying@sibs.ac.cn
+  

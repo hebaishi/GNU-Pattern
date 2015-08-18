@@ -45,7 +45,7 @@
 
 
 /* set array size to num of letters + 1, strlen(alph) will return the right num */
-char NA_alphabet[] = "ACGTN\0";	//ACGTN                      
+char NA_alphabet[] = "ACGTN\0";	//ACGTN
 char EXTNA_alphabet[] = "ACGTN-BDHKMRSVWY\0";	//ACGTN-BDHKMRSVWY
 char PROTEIN_alphabet[] = "ACGTN-BDHKMRSVWYLEFIOPQUXZ*\0";	//ACGTN-BDHKMRSVWYLEFIOPQUXZ*
 
@@ -465,7 +465,7 @@ g_tree (btreeptr leaf, btreeptr prev, paramptr pptr, int m, int n, int tag)
 	}
       //insert the newly created node under the prev node
       insert_tree_node (prev, node, tag);
-      //spectrum density constraint 
+      //spectrum density constraint
       if (node->data.nzero == (pptr->win_width - pptr->min_s_tokens)
 	  || m == n)
 	{
@@ -541,7 +541,7 @@ get_spectrum (btreeptr leaf, int count, spcptr_list spec)
 	  //set the position q+1 to 1
 	  cur->data.spseg |= x;
 	}
-      //go up one layer 
+      //go up one layer
       tmpn = tmpn->previous;
     }
   return 1;
@@ -685,13 +685,13 @@ getrx (paramptr pp, pattlist p, t_sequence **seqs)
 }
 
 int pop(unsigned x) {
-  x = x - ((x >> 1) & 0x55555555); 
-  x = (x & 0x33333333) + ((x >> 2) & 0x33333333); 
-  x = (x + (x >> 4)) & 0x0F0F0F0F; 
-  x = x + (x >> 8); 
-  x = x + (x >> 16); 
-  return x & 0x0000003F; 
-} 
+  x = x - ((x >> 1) & 0x55555555);
+  x = (x & 0x33333333) + ((x >> 2) & 0x33333333);
+  x = (x + (x >> 4)) & 0x0F0F0F0F;
+  x = x + (x >> 8);
+  x = x + (x >> 16);
+  return x & 0x0000003F;
+}
 
 /* get the number of gaps in pattern */
 int
@@ -1078,15 +1078,15 @@ delete_pattern (pattlist pl, pattlist p, int f)
 int
 get_blank (unsigned int spseg)
 {
-  unsigned y; 
-  int n; 
-  n = 32; 
-  y = spseg >>16;  if (y != 0) {n = n -16;  spseg = y;} 
-  y = spseg >> 8;  if (y != 0) {n = n - 8;  spseg = y;} 
-  y = spseg >> 4;  if (y != 0) {n = n - 4;  spseg = y;} 
-  y = spseg >> 2;  if (y != 0) {n = n - 2;  spseg = y;} 
-  y = spseg >> 1;  if (y != 0) return n - 2; 
-  return n - spseg; 
+  unsigned y;
+  int n;
+  n = 32;
+  y = spseg >>16;  if (y != 0) {n = n -16;  spseg = y;}
+  y = spseg >> 8;  if (y != 0) {n = n - 8;  spseg = y;}
+  y = spseg >> 4;  if (y != 0) {n = n - 4;  spseg = y;}
+  y = spseg >> 2;  if (y != 0) {n = n - 2;  spseg = y;}
+  y = spseg >> 1;  if (y != 0) return n - 2;
+  return n - spseg;
 }
 
 void
@@ -1394,7 +1394,7 @@ update_patt (pattlist p, char c, int rx)
       //to transport partial data from one node to the next
       teleport (cur, rx, n - get_blank (cur->data.spseg));
       //cur->data.spseg = (rx < n ? cur->data.spseg << rx: 0);
-      
+
       if (rx < n)
 	{
 	  mask = pow (2, rx) - 1;
@@ -1402,21 +1402,21 @@ update_patt (pattlist p, char c, int rx)
 	}
       else
 	cur->data.spseg = 0;
-      
+
       cur = cur->previous;
       while (cur != p->data.spectrum)
 	{
 	  teleport (cur, rx, n);
 	  //cur->data.spseg = (rx < n ? cur->data.spseg << rx: 0);
-	    
+
 	  if (rx < n)
 	    {
 	      mask = pow (2, rx) - 1;
 	      cur->data.spseg &= ~mask;
 	    }
-	  else 
+	  else
 	    cur->data.spseg = 0;
-	  
+
 	  prev = cur;
 	  cur = cur->previous;
 	}
@@ -1521,7 +1521,7 @@ generate_seed (t_sequence **seqs, paramptr pptr, spcptr_list spec, pattlist seed
   /* the head array and the rear array */
   pattlist prefix_hash[divs], seed_sub;
   pattlist nexus_hash[divs], rear_sub;
-  // n = the number of layers u wanna go 
+  // n = the number of layers u wanna go
   int n = pptr->min_s_tokens;
 
   // change the number if the memory is not enough
@@ -1564,7 +1564,7 @@ generate_seed (t_sequence **seqs, paramptr pptr, spcptr_list spec, pattlist seed
 	      d[l] = toupper ((seqs[j]->seq)[offset]);
 	    }
 	  d[l] = '\0';
-	  
+
 	  h = get_hash_key (d, n, alph_num (pptr->type), 1);
 	  seed_sub = prefix_hash[h];
 	  rear_sub = nexus_hash[h];
@@ -1645,7 +1645,7 @@ find_patt (t_sequence **seqs, FILE * fsw, paramptr pptr,
   char x, y;
   size_t bytes_read = 0;
   int rx, i, j, k, l, outrx, ox, result = 0, aln = alph_num (pptr->type);
-  pattlist pl, curpatt, nexp, rearpatt, rrear = NULL, tmp_patt[aln];  
+  pattlist pl, curpatt, nexp, rearpatt, rrear = NULL, tmp_patt[aln];
 
   curpatt = seed->next;
   if (!curpatt)
@@ -1670,7 +1670,7 @@ find_patt (t_sequence **seqs, FILE * fsw, paramptr pptr,
 	{
 	  for (i = 1; i <= rx; i++)
 	    {
-	      /* for every position of the current pattern, record the number of 
+	      /* for every position of the current pattern, record the number of
 	         the appearance of each character at the given position */
 	      curpos = curpatt->data.location->next;
 
@@ -1704,7 +1704,7 @@ find_patt (t_sequence **seqs, FILE * fsw, paramptr pptr,
 		      if (pptr->type == 0)
 			ox = get_hash_key (&x, 1, alph_num (0), 0);
 		      /* allocate proper size to tmp_patt array according to pptr->type */
-		      /* can NOT insert curpos, we must clone a curpos , or the original curpos 
+		      /* can NOT insert curpos, we must clone a curpos , or the original curpos
 		         will get lost from original poslist!!! */
 		      else if (pptr->type == 1)
 			ox = get_hash_key (&x, 1, alph_num (1), 0);
@@ -1728,12 +1728,12 @@ find_patt (t_sequence **seqs, FILE * fsw, paramptr pptr,
 		    {
 		      if (tmp_patt[k]->data.support == curpatt->data.support)
 			{
-			  /* fill the content of the temporary pattern with the information of the current pattern 
+			  /* fill the content of the temporary pattern with the information of the current pattern
 			     and update some related fields */
 			  clone_patt (tmp_patt[k], curpatt);
 			  update_patt (tmp_patt[k], get_char (k, pptr->type),
 				       i);
-			  //put this temporary pattern after the current pattern 
+			  //put this temporary pattern after the current pattern
 			  if (is_lcmaximal
 			      (pptr, tmp_patt[k], seqs))
 			    insert_pattern_after (curpatt,
@@ -1743,7 +1743,7 @@ find_patt (t_sequence **seqs, FILE * fsw, paramptr pptr,
 			  //delete the curpatt from seed, we have better ones. to search the curpatt in the seed
 			  //is very expensive. some algorithms should be adopted
 			  delete_pattern (seed, curpatt, 1);
-			  /* there wont be a second pattern at this position with such support. 
+			  /* there wont be a second pattern at this position with such support.
 			     jump out the loop */
 			  outrx = 1;
 			  for (j = k; j < aln; j++)
@@ -1778,7 +1778,7 @@ find_patt (t_sequence **seqs, FILE * fsw, paramptr pptr,
 		  free (tmp_patt[k]);
 		  if (i == rx && k == aln - 1)
 		    {
-		      //the current pattern is a maximal pattern that meets the criteria. it shoud be added 
+		      //the current pattern is a maximal pattern that meets the criteria. it shoud be added
 		      //into the result-set and removed from the seed
 		      rearpatt = exactly_clone_patt (curpatt);
 		      go_into_result (pptr, fsw, rearpatt, rrear, result_set);
@@ -1791,7 +1791,7 @@ find_patt (t_sequence **seqs, FILE * fsw, paramptr pptr,
 		}		//end of for aln
 	      if (outrx == 1)
 		break;
-	    }			//end of for rx 
+	    }			//end of for rx
 	}			//end of else
       curpatt = nexp;
     }				//end of while curpatt

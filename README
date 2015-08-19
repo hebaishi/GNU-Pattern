@@ -57,21 +57,22 @@ with the existence of "-x".
 example 3
 	"./gpat -h"
 it lists the help information.
-   "-i input filename                                        input data from file."
-   "-o output filename          (default my_pattern.pat)     output to file."
-   "-k min tokens in seed       (default 5)                  minimum number of tokens in seed."
-   "-l win width of seed        (default 8)                  window width when scanning seed."
-   "-s min supports for seed    (default 2)                  minimum supports needed to be a seed."
-   "-J min tokens in pattern    (default 1)                  minimum number of tokens in pattern."
-   "-K min supports for pattern (default 2)                  minimum supports needed to be reported."
-   "-p min percentage covered   (not used)                   minimum percentage of sequences covered by pattern."
-   "-w min pattern width        (default 0)                  minimum pattern length that should be gained."
-   "-t type sequence type       (default 2)                  dna(0) or extended nucleic acids(1) or protein(2)."
-   "-m multi-threaded           (default 1)                  switch to multi-threaded state"
-   "-n store-pattern till end   (default 0)                  store pattern information till thread dies"
-   "-h --help                                                display this usage information."
-   "-v --verbose                                             print verbose messages."
-   "-x no extension/quick count                              no extension to achieve quick count(k must equal l)");
+	"-i input filename                                        input data from file.\n"
+	"-o output filename          (default my_pattern.pat)     write output to file.\n"
+	"-k min tokens in seed       (default 5)                  minimum number of tokens in seed.\n"
+	"-l win width of seed        (default 8)                  window width when scanning seed.\n"
+	"-s min supports for seed    (default 2)                  minimum supports needed to be a seed.\n"
+	"-J min tokens in pattern    (default 1)                  minimum number of tokens in pattern.\n"
+	"-K min supports for pattern (default 2)                  minimum supports needed to be a pattern.\n"
+	"-p min percentage covered   (not used)                   minimum percentage of sequences covered by pattern.\n"
+	"-w min pattern width        (default 0)                  minimum pattern length that should be gained.\n"
+	"-t type sequence type       (default 2)                  dna or rna or protein.\n"
+	"-m multi-threaded           (default 1)                  switch to multi-threaded state\n"
+	"-n store-pattern till end   (default 0)                  store pattern information till thread dies\n"
+	"-h --help                                                display this usage information.\n"
+	"-v --verbose                                             print verbose messages.\n"
+	"-x no extension/quick count                              no extension to achieve quick count(k must equal l)\n"
+	"-M max_patterns             (default 1000000)            Maximum number of patterns to report\n"
 
 attentions in version 1.0
 ----------

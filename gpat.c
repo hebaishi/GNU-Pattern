@@ -67,7 +67,10 @@ print_usage (FILE * stream, int exit_code)
 	   "-n store-pattern till end   (default 0)                  store pattern information till thread dies\n"
 	   "-h --help                                                display this usage information.\n"
 	   "-v --verbose                                             print verbose messages.\n"
-	   "-x no extension/quick count                              no extension to achieve quick count(k must equal l)\n");
+	   "-x no extension/quick count                              no extension to achieve quick count(k must equal l)\n"
+       "-M max_patterns             (default 1000000)            Maximum number of patterns to report\n"
+
+   );
   exit (exit_code);
 }
 
@@ -77,7 +80,7 @@ main (int argc, char *argv[])
 {
   int i, j, k, aculen;
   int next_option;
-  const char *short_options = "i:o:k:l:s:J:K:p:w:t:m:nhvx";
+  const char *short_options = "i:o:k:l:s:J:K:p:w:t:m:nhvxM:";
   const struct option long_options[] = {
     {"input", required_argument, NULL, 'i'},
     {"output", required_argument, NULL, 'o'},
@@ -94,6 +97,8 @@ main (int argc, char *argv[])
     {"help", no_argument, NULL, 'h'},
     {"verbose", no_argument, NULL, 'v'},
     {"quick_count", no_argument, NULL, 'x'},
+    {"max_patterns", no_argument, NULL, 'M'},
+
     {NULL, 0, NULL, 0}
   };
   const char *output_filename = NULL;
@@ -114,6 +119,8 @@ main (int argc, char *argv[])
   pptr->patt_size = 0;
   pptr->type = 2;
   pptr->thread = 1;
+  pptr->max_patterns = 1000000; // Report a maximum of 1,000,000 patterns
+  pptr->curr_pattern = 0;       // Current pattern initialised to zero
 
   do
     {
@@ -173,7 +180,10 @@ main (int argc, char *argv[])
 	  no_ext = 1;
 	  need_pos = 0;
 	  break;
-	case '?':
+	case 'M':
+      pptr->max_patterns = atoi(optarg);
+      break;
+    case '?':
 	  print_usage (stderr, 1);
 	case -1:
 	  break;

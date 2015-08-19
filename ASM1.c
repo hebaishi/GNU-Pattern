@@ -1123,7 +1123,7 @@ print_text (FILE * fsw, pattlist p)
 }
 
 void
-print_pattern_list (FILE * fsw, pattlist pl)
+print_pattern_list (FILE * fsw, pattlist pl, paramptr pptr)
 {
   pattlist p1;
   poslist pos;
@@ -1131,7 +1131,7 @@ print_pattern_list (FILE * fsw, pattlist pl)
     return;
   pos = pl->data.location;
   p1 = pl->next;
-  while (p1)
+  while (p1 && (pptr->curr_pattern < pptr->max_patterns))
     {
       fprintf (fsw, "id %d support %d size %d ", patt_dis_uid++,
 	       p1->data.support, p1->data.size);
@@ -1139,6 +1139,7 @@ print_pattern_list (FILE * fsw, pattlist pl)
       print_spectrum (fsw, p1->data.spectrum);
       print_position_list (fsw, p1->data.location);
       p1 = p1->next;
+      pptr->curr_pattern++;
     }
 }
 
@@ -1606,13 +1607,17 @@ void go_into_result (paramptr pptr, FILE *fsw, pattlist rearpatt, pattlist rrear
     {
       if (!need_patt)
 	{
-	  pthread_mutex_lock (&fsw_mutex);
-	  fprintf (fsw, "id %d support %d size %d ", patt_dis_uid++, rearpatt->data.support, rearpatt->data.size);
-	  print_text (fsw, rearpatt);
-	  print_spectrum (fsw, rearpatt->data.spectrum);
-	  print_position_list (fsw, rearpatt->data.location);
-	  pthread_mutex_unlock (&fsw_mutex);
-	  delete_spectrum (rearpatt->data.spectrum);
+	  if (pptr->curr_pattern < pptr->max_patterns) {
+          pthread_mutex_lock (&fsw_mutex);
+    	  fprintf (fsw, "id %d support %d size %d ", patt_dis_uid++, rearpatt->data.support, rearpatt->data.size);
+    	  print_text (fsw, rearpatt);
+    	  print_spectrum (fsw, rearpatt->data.spectrum);
+    	  print_position_list (fsw, rearpatt->data.location);
+    	  pptr->curr_pattern++;
+          pthread_mutex_unlock (&fsw_mutex);
+      }
+
+      delete_spectrum (rearpatt->data.spectrum);
 	  delete_position_list (rearpatt->data.location);
 	  free (rearpatt->data.text);
 	  free (rearpatt);
@@ -1841,7 +1846,7 @@ process_phase1_jobs (struct phase1_jobs *next_job, struct pthread_param *p)
       if (need_patt)
 	{
 	  pthread_mutex_lock (&fsw_mutex);
-	  print_pattern_list (p->fsw, result_set);
+	  print_pattern_list (p->fsw, result_set, p->pptr);
 	  pthread_mutex_unlock (&fsw_mutex);
 	}
     }
@@ -1861,7 +1866,7 @@ process_phase1_jobs (struct phase1_jobs *next_job, struct pthread_param *p)
 	    }
 	}
       pthread_mutex_lock (&fsw_mutex);
-      print_pattern_list (p->fsw, seed);
+      print_pattern_list (p->fsw, seed, p->pptr);
       pthread_mutex_unlock (&fsw_mutex);
 
       delete_pattern_list (seed);

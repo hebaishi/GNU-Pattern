@@ -26,6 +26,8 @@
 #define ASM1_DEF
 
 /* special structs used in pattern discovery */
+#include <stdio.h>
+#include <time.h>
 
 typedef enum
 { dna, rna, protein, unknown }
@@ -57,6 +59,7 @@ typedef struct parameters
   int patt_size;
   t_seq_type type;		/* 1=DNA 2=RNA 3=PROTEIN 4=TEXT */
   int thread;
+  int max_patterns, curr_pattern;
 }
 parameters, *paramptr;
 
@@ -257,7 +260,7 @@ int delete_pattern (pattlist pl, pattlist p, int f);
 
 void print_text (FILE * fsw, pattlist p);
 
-void print_pattern_list (FILE * fsw, pattlist pl);
+void print_pattern_list (FILE * fsw, pattlist pl, paramptr pptr);
 
 int delete_pattern_list (pattlist pl);
 
